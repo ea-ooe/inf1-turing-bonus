@@ -1,69 +1,190 @@
-0 0 2 r found0,goingright
-0 1 2 r found1,goingright
-0 2 * r 0
-0 _ * l 0,right,loopedaround
+; Im rechtswärts orientierten Ausgangszustand erfassen wir das erste Zeichen.
+; Da wir hierhin auch zurückkommen, wenn wir rechtswärts ein Paar vervollständigen,
+; kann es passieren, dass wir auf eine 2 stoßen. In diesem Fall suchen wir die
+; nächste 0 oder 1.
+; - Wenn wir eine 0 finden → Suchzustand, rechtswärts, suche 1
+; - Wenn wir eine 1 finden → Suchzustand, rechtswärts, suche 0
+; - Wenn wir eine 2 finden → Ausgangszustand, rechtswärts, erneuter Versuch
+; - Wenn wir das Ende erreichen, wissen wir nicht, ob wir am Anfang angefangen haben. 
+; - Wir können noch kein sicheres Ergebnis feststellen. → Ausgangszustand, linkswärts, mit erfolgtem Umbruch
+0 0 2 r found0,goingright    
+0 1 2 r found1,goingright    
+0 2 * r 0                    
+0 _ * l 0,right,loopedaround 
+                             
 
-0,loopedaround 0 2 r found0,goingright
-0,loopedaround 1 2 r found1,goingright
-0,loopedaround 2 * r 0,loopedaround
+; Rechtswärts orientierter Ausgangszustand, in dem wir uns nur befinden,
+; wenn wir am linken Ende der Zeile das erste Element eines Paares suchen.
+; Wenn wir in diesem Zustand nur 2en finden und das Ende erreichen, wissen wir,
+; dass eine 2 ausgegeben werden muss.
+; - Wenn wir eine 0 finden → Suchzustand, rechtswärts, suche 1
+; - Wenn wir eine 1 finden → Suchzustand, rechtswärts, suche 0
+; - Wenn wir eine 2 finden → Ausgangszustand (mit Umbruch), rechtswärts, erneuter Versuch
+; - Wenn wir ein  _ finden → Ausgabe 2 und halt
+0,loopedaround 0 2 r found0,goingright   
+0,loopedaround 1 2 r found1,goingright   
+0,loopedaround 2 * r 0,loopedaround      
 0,loopedaround _ 2 * halt
 
+
+; Linkswärts orientierter Ausgangszustand, in dem wir uns befinden, wenn
+; wir uns linkswärts bewegen, und das erste Element für ein neues Paar suchen.
+; wir wissen nicht, ob wir am rechten Ende der Zeile angefangen haben, deswegen
+; gehen wir, wenn wir das Ende erreichen in den rechtswärts orientierten Aus-
+; gangszustand mit Umbruch, und suchen weiter.
+; - Wenn wir eine 0 finden → Suchzustand, linkswärts, suche 1
+; - Wenn wir eine 1 finden → Suchzustand, linkswärts, suche 0
+; - Wenn wir eine 2 finden → Ausgangszustand, linkswärts, erneuter Versuch
+; - Wenn wir ein  _ finden → Ausgangszustand, rechtswärts, mit erfolgtem Umbruch
 0,right 0 2 l found0,goingleft
 0,right 1 2 l found1,goingleft
 0,right 2 * l 0,right
 0,right _ * r 0,loopedaround
 
+
+; Linkswärts orientierter Ausgangszustand, in dem wir uns nur befinden,
+; wenn wir am rechten Ende der Zeile das erste Element eines Paares suchen.
+; Wenn wir in diesem Zustand nur 2en finden und das Ende erreichen, wissen wir,
+; dass eine 2 ausgegeben werden muss.
+; - Wenn wir eine 0 finden → Suchzustand, linkswärts, suche 1
+; - Wenn wir eine 1 finden → Suchzustand, linkswärts, suche 0
+; - Wenn wir eine 2 finden → Ausgangszustand (mit Umbruch), linkswärts, erneuter Versuch
+; - Wenn wir ein  _ finden → Übergang in den „eval2“ Zustand, der an das rechte
+;                            Ende geht, und dort 2 ausgibt.
 0,right,loopedaround 0 2 l found0,goingleft
 0,right,loopedaround 1 2 l found1,goingleft
 0,right,loopedaround 2 * l 0,right,loopedaround
 0,right,loopedaround _ * r eval2
 
+
+; Rechtswärts orientierter Suchzustand, in dem wir uns befinden,
+; wenn wir das zweite Element (eine 1) für ein Paar (beginnend mit 0)
+; suchen. Wir wissen nicht, ob wir am Ende der Zeile angefangen haben,
+; deswegen gehen wir in den entsprechenden Suchzustand mit Umbruch über,
+; wenn wir das Ende der Zeile erreichen.
+; - Wenn wir eine 0 finden → Selber Suchzustand, suche weiter nach 1
+; - Wenn wir eine 1 finden → Ausgangszustand, rechtswärts, Paar komplett.
+; - Wenn wir eine 2 finden → Selber Suchzustand, suche weiter nach 1
+; - Wenn wir ein  _ finden → Entsprechender Suchzustand mit Umbruch, suche weiter nach 1
 found0,goingright 0 * r found0,goingright
 found0,goingright 1 2 r 0
 found0,goingright 2 * r found0,goingright
 found0,goingright _ * l found0,goingleft,loopedaround
 
+
+; Rechtswärts orientierter Suchzustand, in dem wir uns befinden,
+; wenn wir das zweite Element (eine 0) für ein Paar (beginnend mit 1)
+; suchen. Wir wissen nicht, ob wir am Ende der Zeile angefangen haben,
+; deswegen gehen wir in den entsprechenden Suchzustand mit Umbruch über,
+; wenn wir das Ende der Zeile erreichen.
+; - Wenn wir eine 1 finden → Selber Suchzustand, suche weiter nach 0
+; - Wenn wir eine 0 finden → Ausgangszustand, rechtswärts, Paar komplett.
+; - Wenn wir eine 2 finden → Selber Suchzustand, suche weiter nach 0
+; - Wenn wir ein  _ finden → Entsprechender Suchzustand mit Umbruch, suche weiter nach 0
 found1,goingright 1 * r found1,goingright
 found1,goingright 0 2 r 0
 found1,goingright 2 * r found1,goingright
 found1,goingright _ * l found1,goingleft,loopedaround
 
+
+; Rechtswärts orientierter Suchzustand, in dem wir uns befinden,
+; wenn wir bei der Suche nach einem zweiten Element (einer 1) für ein Paar
+; (beginnend mit 0) das linke Ende der Zeile erreicht haben.
+; Wenn wir in diesem Zustand das Ende der Zeile erreichen, wissen wir, dass
+; es mindestens eine 0 mehr als 1en gibt, und geben 0 aus.
+; - Wenn wir eine 0 finden → Selber Suchzustand, suche weiter nach 1
+; - Wenn wir eine 1 finden → Ausgangszustand, rechtswärts, Paar komplett.
+; - Wenn wir eine 2 finden → Selber Suchzustand, suche weiter nach 1
+; - Wenn wir ein  _ finden → Wir geben 0 als Ergebnis aus.
 found0,goingright,loopedaround 0 * r found0,goingright,loopedaround
 found0,goingright,loopedaround 1 2 r 0
 found0,goingright,loopedaround 2 * r found0,goingright,loopedaround
 found0,goingright,loopedaround _ 0 * halt
 
+
+; Rechtswärts orientierter Suchzustand, in dem wir uns befinden,
+; wenn wir bei der Suche nach einem zweiten Element (einer 0) für ein Paar
+; (beginnend mit 1) das linke Ende der Zeile erreicht haben.
+; Wenn wir in diesem Zustand das Ende der Zeile erreichen, wissen wir, dass
+; es mindestens eine 1 mehr als 0en gibt, und geben 1 aus.
+; - Wenn wir eine 1 finden → Selber Suchzustand, suche weiter nach 0
+; - Wenn wir eine 0 finden → Ausgangszustand, rechtswärts, Paar komplett.
+; - Wenn wir eine 2 finden → Selber Suchzustand, suche weiter nach 0
+; - Wenn wir ein  _ finden → Wir geben 1 als Ergebnis aus.
 found1,goingright,loopedaround 1 * r found1,goingright,loopedaround
 found1,goingright,loopedaround 0 2 r 0
 found1,goingright,loopedaround 2 * r found1,goingright,loopedaround
 found1,goingright,loopedaround _ 1 * halt
 
+
+; Linkswärts orientierter Suchzustand, in dem wir uns befinden,
+; wenn wir das zweite Element (eine 1) für ein Paar (beginnend mit 0)
+; suchen. Wir wissen nicht, ob wir am Ende der Zeile angefangen haben,
+; deswegen gehen wir in den entsprechenden Suchzustand mit Umbruch über,
+; wenn wir das Ende der Zeile erreichen.
+; - Wenn wir eine 0 finden → Selber Suchzustand, suche weiter nach 1
+; - Wenn wir eine 1 finden → Ausgangszustand, linkswärts, Paar komplett.
+; - Wenn wir eine 2 finden → Selber Suchzustand, suche weiter nach 1
+; - Wenn wir ein  _ finden → Entsprechender Suchzustand mit Umbruch, suche weiter nach 1
 found0,goingleft 0 * l found0,goingleft
 found0,goingleft 1 2 l 0,right
 found0,goingleft 2 * l found0,goingleft
 found0,goingleft _ * r found0,goingright,loopedaround
 
+
+; Linkswärts orientierter Suchzustand, in dem wir uns befinden,
+; wenn wir das zweite Element (eine 0) für ein Paar (beginnend mit 1)
+; suchen. Wir wissen nicht, ob wir am Ende der Zeile angefangen haben,
+; deswegen gehen wir in den entsprechenden Suchzustand mit Umbruch über,
+; wenn wir das Ende der Zeile erreichen.
+; - Wenn wir eine 1 finden → Selber Suchzustand, suche weiter nach 0
+; - Wenn wir eine 0 finden → Ausgangszustand, linkswärts, Paar komplett.
+; - Wenn wir eine 2 finden → Selber Suchzustand, suche weiter nach 0
+; - Wenn wir ein  _ finden → Entsprechender Suchzustand mit Umbruch, suche weiter nach 0
 found1,goingleft 1 * l found1,goingleft
 found1,goingleft 0 2 l 0,right
 found1,goingleft 2 * l found1,goingleft
 found1,goingleft _ * r found1,goingright,loopedaround
 
+
+; Linkswärts orientierter Suchzustand, in dem wir uns befinden,
+; wenn wir bei der Suche nach einem zweiten Element (einer 1) für ein Paar
+; (beginnend mit 0) das rechte Ende der Zeile erreicht haben.
+; Wenn wir in diesem Zustand das Ende der Zeile erreichen, wissen wir, dass
+; es mindestens eine 0 mehr als 1en gibt, gehen nach rechts, und geben 0 aus.
+; - Wenn wir eine 0 finden → Selber Suchzustand, suche weiter nach 1
+; - Wenn wir eine 1 finden → Ausgangszustand, rechtswärts, Paar komplett.
+; - Wenn wir eine 2 finden → Selber Suchzustand, suche weiter nach 1
+; - Wenn wir ein  _ finden → Wir gehen nach rechts und geben 0 als Ergebnis aus.
 found0,goingleft,loopedaround 0 * l found0,goingleft,loopedaround
 found0,goingleft,loopedaround 1 2 l 0,right
 found0,goingleft,loopedaround 2 * l found0,goingleft,loopedaround
 found0,goingleft,loopedaround _ * r eval0
 
+
+; Linkswärts orientierter Suchzustand, in dem wir uns befinden,
+; wenn wir bei der Suche nach einem zweiten Element (einer 0) für ein Paar
+; (beginnend mit 1) das rechte Ende der Zeile erreicht haben.
+; Wenn wir in diesem Zustand das Ende der Zeile erreichen, wissen wir, dass
+; es mindestens eine 1 mehr als 0en gibt, gehen nach rechts, und geben 1 aus.
+; - Wenn wir eine 1 finden → Selber Suchzustand, suche weiter nach 0
+; - Wenn wir eine 0 finden → Ausgangszustand, rechtswärts, Paar komplett.
+; - Wenn wir eine 2 finden → Selber Suchzustand, suche weiter nach 0
+; - Wenn wir ein  _ finden → Wir gehen nach rechts und geben 1 als Ergebnis aus.
 found1,goingleft,loopedaround 1 * l found1,goingleft,loopedaround
 found1,goingleft,loopedaround 0 2 l 0,right
 found1,goingleft,loopedaround 2 * l found1,goingleft,loopedaround
 found1,goingleft,loopedaround _ * r eval1
 
 
+; Zustand, der nach rechts geht, und 0 als Ergebnis ausgibt.
 eval0 _ 0 * halt
 eval0 * * r eval0
 
+; Zustand, der nach rechts geht, und 1 als Ergebnis ausgibt.
 eval1 _ 1 * halt
 eval1 * * r eval1
 
+; Zustand, der nach rechts geht, und 2 als Ergebnis ausgibt.
 eval2 _ 2 * halt
 eval2 2 * r eval2
