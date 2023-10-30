@@ -16,7 +16,7 @@
 0,right,loopedaround 0 2 l found0,goingleft
 0,right,loopedaround 1 2 l found1,goingleft
 0,right,loopedaround 2 * l 0,right,loopedaround
-0,right,loopedaround _ * r eval
+0,right,loopedaround _ * r eval2
 
 found0,goingright 0 * r found0,goingright
 found0,goingright 1 2 r 0
@@ -57,11 +57,6 @@ found1,goingleft,loopedaround 1 * l found1,goingleft,loopedaround
 found1,goingleft,loopedaround 0 2 l 0,right
 found1,goingleft,loopedaround 2 * l found1,goingleft,loopedaround
 found1,goingleft,loopedaround _ * r eval1
-
-eval 2 * r eval
-eval 1 * r eval1
-eval 0 * r eval0
-eval _ * * eval2
 
 
 eval0 _ 0 * halt
