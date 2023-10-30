@@ -1,44 +1,73 @@
 0 0 2 r found0,goingright
 0 1 2 r found1,goingright
 0 2 * r 0
-0 _ 2 * halt
+0 _ * l retour,goingleft
 
 found0,goingright 0 * r found0,goingright
-found0,goingright 1 2 l retour,goingright
+found0,goingright 1 2 r 0
 found0,goingright 2 * r found0,goingright
-found0,goingright _ 0 * halt
+found0,goingright _ * l found0,goingleft,loopedaround
 
 found1,goingright 1 * r found1,goingright
-found1,goingright 0 2 l retour,goingright
+found1,goingright 0 2 r 0
 found1,goingright 2 * r found1,goingright
-found1,goingright _ 1 * halt
+found1,goingright _ * l found1,goingleft,loopedaround
 
-retour,goingright _ * l 0,right
-retour,goingright * * r retour,goingright
+found0,goingright,loopedaround 0 * r found0,goingright,loopedaround
+found0,goingright,loopedaround 1 2 r 0
+found0,goingright,loopedaround 2 * r found0,goingright,loopedaround
+found0,goingright,loopedaround _ 0 * halt
 
-retour,goingleft _ * r 0
+found1,goingright,loopedaround 1 * r found1,goingright,loopedaround
+found1,goingright,loopedaround 0 2 r 0
+found1,goingright,loopedaround 2 * r found1,goingright,loopedaround
+found1,goingright,loopedaround _ 1 * halt
+
+retour,goingleft _ * r eval
 retour,goingleft * * l retour,goingleft
 
 0,right 0 2 l found0,goingleft
 0,right 1 2 l found1,goingleft
 0,right 2 * l 0,right
-0,right _ * r eval2
+0,right _ * r eval
 
 found0,goingleft 0 * l found0,goingleft
-found0,goingleft 1 2 r retour,goingleft
+found0,goingleft 1 2 l 0,right
 found0,goingleft 2 * l found0,goingleft
-found0,goingleft _ * r eval0
+found0,goingleft _ * r found0,goingright,loopedaround
 
 found1,goingleft 1 * l found1,goingleft
-found1,goingleft 0 2 r retour,goingleft
+found1,goingleft 0 2 l 0,right
 found1,goingleft 2 * l found1,goingleft
-found1,goingleft _ * r eval1
+found1,goingleft _ * r found1,goingright,loopedaround
+
+found0,goingleft,loopedaround 0 * l found0,goingleft,loopedaround
+found0,goingleft,loopedaround 1 2 l 0,right
+found0,goingleft,loopedaround 2 * l found0,goingleft,loopedaround
+found0,goingleft,loopedaround _ * r eval0
+
+found1,goingleft,loopedaround 1 * l found1,goingleft,loopedaround
+found1,goingleft,loopedaround 0 2 l 0,right
+found1,goingleft,loopedaround 2 * l found1,goingleft,loopedaround
+found1,goingleft,loopedaround _ * r eval1
+
+eval 2 * r eval
+eval 1 * r eval1
+eval 0 * r eval0
+eval _ * * eval2
+
 
 eval0 _ 0 * halt
+eval0 1 * l errorretour
 eval0 * * r eval0
 
 eval1 _ 1 * halt
+eval1 0 * l errorretour
 eval1 * * r eval1
 
 eval2 _ 2 * halt
-eval2 * * r eval2
+eval2 2 * r eval2
+eval2 * * l errorretour
+
+errorretour _ * r 0
+errorretour * * l errorretour
