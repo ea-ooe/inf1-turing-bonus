@@ -1,0 +1,17 @@
+0 0 2 r begin0
+0 1 2 r begin1
+0 2 * r 0
+0 _ 2 * halt
+
+begin0 0 * r begin0
+begin0 1 2 l retour
+begin0 2 * r begin0
+begin0 _ 0 * halt
+
+begin1 1 * r begin1
+begin1 0 2 l retour
+begin1 2 * r begin1
+begin1 _ 1 * halt
+
+retour _ * r 0
+retour * * l retour
