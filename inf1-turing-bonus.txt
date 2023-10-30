@@ -68,16 +68,10 @@ eval _ * * eval2
 
 
 eval0 _ 0 * halt
-eval0 1 * l errorretour
 eval0 * * r eval0
 
 eval1 _ 1 * halt
-eval1 0 * l errorretour
 eval1 * * r eval1
 
 eval2 _ 2 * halt
 eval2 2 * r eval2
-eval2 * * l errorretour
-
-errorretour _ * r 0
-errorretour * * l errorretour
