@@ -3,6 +3,16 @@
 0 2 * r 0
 0 _ * l 0,right,loopedaround
 
+0,loopedaround 0 2 r found0,goingright
+0,loopedaround 1 2 r found1,goingright
+0,loopedaround 2 * r 0,loopedaround
+0,loopedaround _ 2 * halt
+
+0,right 0 2 l found0,goingleft
+0,right 1 2 l found1,goingleft
+0,right 2 * l 0,right
+0,right _ * r 0,loopedaround
+
 0,right,loopedaround 0 2 l found0,goingleft
 0,right,loopedaround 1 2 l found1,goingleft
 0,right,loopedaround 2 * l 0,right,loopedaround
@@ -27,19 +37,6 @@ found1,goingright,loopedaround 1 * r found1,goingright,loopedaround
 found1,goingright,loopedaround 0 2 r 0
 found1,goingright,loopedaround 2 * r found1,goingright,loopedaround
 found1,goingright,loopedaround _ 1 * halt
-
-retour,goingleft _ * r eval
-retour,goingleft * * l retour,goingleft
-
-0,right 0 2 l found0,goingleft
-0,right 1 2 l found1,goingleft
-0,right 2 * l 0,right
-0,right _ * r 0,loopedaround
-
-0,loopedaround 0 2 r found0,goingright
-0,loopedaround 1 2 r found1,goingright
-0,loopedaround 2 * r 0,loopedaround
-0,loopedaround _ 2 * halt
 
 found0,goingleft 0 * l found0,goingleft
 found0,goingleft 1 2 l 0,right
