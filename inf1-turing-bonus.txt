@@ -1,3 +1,11 @@
+; Turing-Maschine, die eine zusammenhängende Folge von Nullen und Einsen analysiert,
+; und am rechten Ende eine 1 ausgibt, wenn es mehr Einsen als Nullen gibt,
+; eine 0 ausgibt, wenn es mehr Nullen als Einsen gibt,
+; eine 2 ausgibt, wenn es gleich viele Nullen und Einsen gibt.
+;
+; Am 30.10.2023 konstruiert für die 3. Bonusaufgabe im Fach FFI_INF1 bei ***
+
+
 ; Im rechtswärts orientierten Ausgangszustand erfassen wir das erste Zeichen.
 ; Da wir hierhin auch zurückkommen, wenn wir rechtswärts ein Paar vervollständigen,
 ; kann es passieren, dass wir auf eine 2 stoßen. In diesem Fall suchen wir die
