@@ -1,17 +1,44 @@
-0 0 2 r begin0
-0 1 2 r begin1
+0 0 2 r found0,goingright
+0 1 2 r found1,goingright
 0 2 * r 0
 0 _ 2 * halt
 
-begin0 0 * r begin0
-begin0 1 2 l retour
-begin0 2 * r begin0
-begin0 _ 0 * halt
+found0,goingright 0 * r found0,goingright
+found0,goingright 1 2 l retour,goingright
+found0,goingright 2 * r found0,goingright
+found0,goingright _ 0 * halt
 
-begin1 1 * r begin1
-begin1 0 2 l retour
-begin1 2 * r begin1
-begin1 _ 1 * halt
+found1,goingright 1 * r found1,goingright
+found1,goingright 0 2 l retour,goingright
+found1,goingright 2 * r found1,goingright
+found1,goingright _ 1 * halt
 
-retour _ * r 0
-retour * * l retour
+retour,goingright _ * l 0,right
+retour,goingright * * r retour,goingright
+
+retour,goingleft _ * r 0
+retour,goingleft * * l retour,goingleft
+
+0,right 0 2 l found0,goingleft
+0,right 1 2 l found1,goingleft
+0,right 2 * l 0,right
+0,right _ * r eval2
+
+found0,goingleft 0 * l found0,goingleft
+found0,goingleft 1 2 r retour,goingleft
+found0,goingleft 2 * l found0,goingleft
+found0,goingleft _ * r eval0
+
+found1,goingleft 1 * l found1,goingleft
+found1,goingleft 0 2 r retour,goingleft
+found1,goingleft 2 * l found1,goingleft
+found1,goingleft _ * r eval1
+
+eval0 _ 0 * halt
+eval0 * * r eval0
+
+eval1 _ 1 * halt
+eval1 * * r eval1
+
+eval2 _ 2 * halt
+eval2 * * r eval2
